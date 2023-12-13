@@ -121,7 +121,7 @@ func romanToArabic(romanNum string) (int64, error) {
 }
 
 func arabicToRoman(arabicNum int64) string {
-	if arabicNum <= 0 || arabicNum > 10 {
+	if arabicNum <= 0 || arabicNum > 20 {
 		err := fmt.Errorf("число должно быть в диапазоне от 1 до 10. Получено: %d", arabicNum)
 		fmt.Println(err)
 		os.Exit(1)
