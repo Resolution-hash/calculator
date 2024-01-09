@@ -29,7 +29,7 @@ func showResult(expression string) {
 
 	if isRoman(strings.TrimSpace(parts[0])) {
 		if !isRoman(strings.TrimSpace(parts[2])) {
-			err := fmt.Errorf("ошибка: оба числа должны быть римскими или арабскими")
+			err := fmt.Errorf("Ошибка: оба числа должны быть римскими или арабскими")
 			fmt.Println(err)
 			os.Exit(1)
 		}
@@ -39,12 +39,14 @@ func showResult(expression string) {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+		checkNumRange(num1)
 
 		num2, err = romanToArabic(strings.TrimSpace(parts[2]))
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+		checkNumRange(num2)
 
 		operator := parts[1]
 		result := calculation(operator, num1, num2)
@@ -56,15 +58,23 @@ func showResult(expression string) {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-
+		checkNumRange(num1)
 		num2, err = strconv.ParseInt(strings.TrimSpace(parts[2]), 10, 64)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+		checkNumRange(num2)
 		operator := parts[1]
 
 		fmt.Printf("%d", calculation(operator, num1, num2))
+	}
+}
+
+func checkNumRange(num int64) {
+	if num > 10 || num < 1 {
+		fmt.Println("Ошибка. Допустимые числа: от 1 до 10 включительно.")
+		os.Exit(1)
 	}
 }
 
@@ -79,13 +89,13 @@ func calculation(operator string, num1 int64, num2 int64) int64 {
 		result = num1 * num2
 	case "/":
 		if num2 == 0 {
-			err := fmt.Errorf("деление на ноль невозможно")
+			err := fmt.Errorf("Деление на ноль невозможно")
 			fmt.Println(err)
 			os.Exit(1)
 		}
 		result = num1 / num2
 	default:
-		err := fmt.Errorf("неподдерживаемый оператор: %s", operator)
+		err := fmt.Errorf("Неподдерживаемый оператор: %s", operator)
 		fmt.Println(err)
 		os.Exit(1)
 	}
@@ -122,7 +132,7 @@ func romanToArabic(romanNum string) (int64, error) {
 
 func arabicToRoman(arabicNum int64) string {
 	if arabicNum <= 0 || arabicNum > 20 {
-		err := fmt.Errorf("число должно быть в диапазоне от 1 до 10. Получено: %d", arabicNum)
+		err := fmt.Errorf("Число должно быть в диапазоне от 1 до 10.")
 		fmt.Println(err)
 		os.Exit(1)
 	}
