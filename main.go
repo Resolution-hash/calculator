@@ -24,9 +24,6 @@ func showResult(expression string) {
 		os.Exit(1)
 	}
 
-	var num1, num2 int64
-	var err error
-
 	if isRoman(strings.TrimSpace(parts[0])) {
 		if !isRoman(strings.TrimSpace(parts[2])) {
 			err := fmt.Errorf("Ошибка: оба числа должны быть римскими или арабскими")
@@ -34,14 +31,14 @@ func showResult(expression string) {
 			os.Exit(1)
 		}
 
-		num1, err = romanToArabic(strings.TrimSpace(parts[0]))
+		num1, err := romanToArabic(strings.TrimSpace(parts[0]))
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 		checkNumRange(num1)
 
-		num2, err = romanToArabic(strings.TrimSpace(parts[2]))
+		num2, err := romanToArabic(strings.TrimSpace(parts[2]))
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -53,13 +50,13 @@ func showResult(expression string) {
 
 		fmt.Println(arabicToRoman(result))
 	} else {
-		num1, err = strconv.ParseInt(strings.TrimSpace(parts[0]), 10, 64)
+		num1, err := strconv.ParseInt(strings.TrimSpace(parts[0]), 10, 64)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 		checkNumRange(num1)
-		num2, err = strconv.ParseInt(strings.TrimSpace(parts[2]), 10, 64)
+		num2, err := strconv.ParseInt(strings.TrimSpace(parts[2]), 10, 64)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -73,7 +70,7 @@ func showResult(expression string) {
 
 func checkNumRange(num int64) {
 	if num > 10 || num < 1 {
-		fmt.Println("Ошибка. Допустимые числа: от 1 до 10 включительно.")
+		fmt.Println("Ошибка. Допустимые числа: от 1 до 10.")
 		os.Exit(1)
 	}
 }
@@ -104,7 +101,7 @@ func calculation(operator string, num1 int64, num2 int64) int64 {
 }
 
 func isRoman(input string) bool {
-	romanChars := "IVXLCDM"
+	romanChars := "IVX"
 	for _, char := range input {
 		if !strings.ContainsRune(romanChars, char) {
 			return false
@@ -131,21 +128,24 @@ func romanToArabic(romanNum string) (int64, error) {
 }
 
 func arabicToRoman(arabicNum int64) string {
-	if arabicNum <= 0 || arabicNum > 20 {
-		err := fmt.Errorf("Число должно быть в диапазоне от 1 до 10.")
+	if arabicNum < 1 {
+		err := fmt.Errorf("Ошибка. Результатом работы могут быть числа не меньше 1")
 		fmt.Println(err)
 		os.Exit(1)
 	}
-
 	romanMap := map[int]string{
-		1:  "I",
-		4:  "IV",
-		5:  "V",
-		9:  "IX",
-		10: "X",
+		1:   "I",
+		4:   "IV",
+		5:   "V",
+		9:   "IX",
+		10:  "X",
+		40:  "XL",
+		50:  "L",
+		90:  "XC",
+		100: "C",
 	}
 
-	values := []int{10, 9, 5, 4, 1}
+	values := []int{100, 90, 50, 40, 10, 9, 5, 4, 1}
 
 	romanNum := ""
 
